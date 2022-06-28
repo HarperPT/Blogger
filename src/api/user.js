@@ -25,4 +25,52 @@ export default {
         });
     });
   },
+  getUserInfo(account) {
+    return new Promise((res, rej) => {
+      axios
+        .get(`/api/v1/user/${account}`)
+        .then((response) => {
+          res(response);
+        })
+        .catch((error) => {
+          rej(error);
+        });
+    });
+  },
+  createUser(body) {
+    return new Promise((res, rej) => {
+      axios
+        .post(`/api/v1/user`, body)
+        .then((response) => {
+          res(response);
+        })
+        .catch((error) => {
+          rej(error);
+        });
+    });
+  },
+  editUser(){
+    return new Promise((res, rej) => {
+      axios
+        .put(`/api/v1/user`, body)
+        .then((response) => {
+          res(response);
+        })
+        .catch((error) => {
+          rej(error);
+        });
+    });
+  },
+  deleteUser(){
+    return new Promise((res, rej) => {
+      axios
+        .delete(`/api/v1/user`, body)
+        .then((response) => {
+          res(response);
+        })
+        .catch((error) => {
+          rej(error);
+        });
+    });
+  }
 };
