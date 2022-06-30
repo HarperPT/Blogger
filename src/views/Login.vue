@@ -12,9 +12,6 @@
           <el-button type="primary" @click="onLogin">Login</el-button>
         </el-form-item>
       </el-form>
-      <div class="box">
-        <el-button type="primary" @click="getUsers">getUsers</el-button>
-      </div>
     </div>
   </div>
 </template>
@@ -39,20 +36,17 @@ export default {
         // TODO: status
         // TODO: logs
         const { data } = await UserApi.login(this.form);
-        console.log(data);
-        localStorage.setItem("token", data.result.token);
+        await this.setLocalStorage(data.result.token);
+        this.$router.push({ path: "/" });
       } catch (error) {
-        console.log(error);
-        localStorage.setItem("token", "");
+        await this.setLocalStorage("");
+        alert(error)
+      } finally {
+        a
       }
     },
-    async getUsers() {
-      try {
-        const reuslt = await UserApi.getUsers(this.form);
-        console.log(reuslt);
-      } catch (error) {
-        console.log(error);
-      }
+    async setLocalStorage(token) {
+      localStorage.setItem("token", token);
     },
   },
 };

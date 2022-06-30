@@ -220,6 +220,7 @@ export default {
       });
     },
     resetValidation() {
+      this.userForm.clear();
       this.$refs["userForm"].resetFields();
     },
     async handleConfirm() {
@@ -230,7 +231,7 @@ export default {
       const req = this.userForm.reqCreate;
       try {
         const { data } = await UserApi.createUser(req);
-        this.$emit("loadData");
+        this.successAction();
       } catch (error) {
         console.log(error);
       }
@@ -239,8 +240,8 @@ export default {
       this.validation();
       const req = this.userForm.reqEdit;
       try {
-        const { data } = await UserApi.editUser(req);
-        // console.log(data);
+        const  data  = await UserApi.editUser(req);
+        this.successAction();
       } catch (error) {
         console.log(error);
       }
@@ -250,7 +251,7 @@ export default {
       const req = this.userForm.reqDelete;
       try {
         const { data } = await UserApi.deleteUser(req);
-        // console.log(data);
+        this.successAction();
       } catch (error) {
         console.log(error);
       }
@@ -266,6 +267,10 @@ export default {
     },
     closeDialog() {
       this.$store.commit("showDialog", false);
+    },
+    successAction() {
+      this.$store.commit("showDialog", false);
+      this.$emit("loadData");
     },
   },
 };

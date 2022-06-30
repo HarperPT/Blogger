@@ -98,11 +98,8 @@ export default {
     async loadUserList() {
       try {
         const { data } = await UserApi.getUsers();
-        console.log(data.result);
         this.tableData = data.result;
-      } catch (error) {
-        console.log(error);
-      }
+      } catch (error) {}
     },
     async getUserInfo(index, row) {
       const account = row.account;
@@ -110,7 +107,6 @@ export default {
       try {
         const { data } = await UserApi.getUserInfo(account);
         this.userForm.data = data.result;
-        console.log(data.result);
         this.showUserDialog();
       } catch (error) {
         console.log(error);
@@ -126,15 +122,17 @@ export default {
       this.userForm.data = row;
       this.showUserDialog();
     },
-    handleDelete(index, row) {
+    async handleDelete(index, row) {
       this.mode = DIALOG_MODE.DELETE;
+      this.userForm.data = row;
+      this.showUserDialog();
     },
 
     showUserDialog() {
       this.$store.dispatch("showUserDialog");
     },
   },
-  beforeMount() {
+  mounted() {
     this.loadUserList();
   },
 };

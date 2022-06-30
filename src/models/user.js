@@ -38,6 +38,7 @@ export default class User {
       password: this.password,
       password_confirmation: this.passwordConfirmation,
       name: this.name,
+      active: this.active,
     };
   }
 
@@ -45,6 +46,18 @@ export default class User {
     return {
       account: this.account,
     };
+  }
+
+  clear() {
+    this.account = "";
+    this.password = "";
+    this.passwordConfirmation = "";
+    this.name = "";
+    this.active = "";
+    this.id = "";
+    this.token = "";
+    this.createdAt = "";
+    this.updatedAt = "";
   }
 }
 
@@ -100,7 +113,12 @@ export const DIALOG_MODE = {
   EDIT: {
     id: "EDIT",
     lable: "action.edit",
-    fields: [FORM_FIELD.PASSWORD, FORM_FIELD.PASSWORD_CONFIRM, FORM_FIELD.NAME],
+    fields: [
+      FORM_FIELD.PASSWORD,
+      FORM_FIELD.PASSWORD_CONFIRM,
+      FORM_FIELD.NAME,
+      FORM_FIELD.ACTIVE,
+    ],
     disableds: [],
   },
   DELETE: {

@@ -3,8 +3,8 @@ import Login from "../views/Login";
 import Home from "@/views/Home";
 
 const routes = [
-  { path: "/", component: Home },
-  { path: "/login", component: Login },
+  { path: "/", name: "Home", component: Home },
+  { path: "/login", name: "Login", component: Login },
 ];
 
 const router = new VueRouter({
@@ -17,9 +17,9 @@ router.beforeEach((to, from, next) => {
     next();
   } else {
     let token = localStorage.getItem("token");
-
-    if (token === "null" || token === "") {
-      next("/login");
+    if (token == null || token == "") {
+      // next("/login");
+      next({path: '/login'})
     } else {
       next();
     }

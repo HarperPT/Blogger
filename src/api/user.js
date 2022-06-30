@@ -49,10 +49,10 @@ export default {
         });
     });
   },
-  editUser(){
+  editUser(body) {
     return new Promise((res, rej) => {
       axios
-        .put(`/api/v1/user`, body)
+        .put(`/api/v1/user`,body)
         .then((response) => {
           res(response);
         })
@@ -61,10 +61,10 @@ export default {
         });
     });
   },
-  deleteUser(){
+  deleteUser(params) {
     return new Promise((res, rej) => {
       axios
-        .delete(`/api/v1/user`, body)
+        .delete(`/api/v1/user`, { params: params })
         .then((response) => {
           res(response);
         })
@@ -72,5 +72,5 @@ export default {
           rej(error);
         });
     });
-  }
+  },
 };
