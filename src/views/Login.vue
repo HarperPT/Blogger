@@ -42,7 +42,6 @@ export default {
         await this.setLocalStorage("");
         alert(error)
       } finally {
-        a
       }
     },
     async setLocalStorage(token) {

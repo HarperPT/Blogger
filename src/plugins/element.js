@@ -6,10 +6,10 @@ import VueI18n from "vue-i18n";
 import VueRouter from "vue-router";
 import VueAxios from "vue-axios";
 import axios from "axios";
-import api from '@/api';
+import '@/api';
 
 Vue.use(VueRouter);
 Vue.use(VueI18n);
 Vue.use(Element, { locale });
 Vue.use(VueAxios, axios);
-Vue.prototype.$api = api
+// Vue.prototype.$api = api
