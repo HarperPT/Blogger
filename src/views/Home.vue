@@ -1,13 +1,12 @@
 <template>
   <div class="container">
     <div class="table-container">
-      <el-button
-        size="mini"
-        type="success"
-        @click="handleCreate()"
-      >
-        {{ $t("action.create") }}
-      </el-button>
+      <div>
+        <el-button size="mini" type="success" @click="handleCreate()">
+          {{ $t("action.create") }}
+        </el-button>
+      </div>
+
       <el-table
         :data="tableData"
         :default-sort="{ prop: 'date', order: 'ascending' }"
@@ -30,7 +29,7 @@
             <span>{{ scope.row.name }}</span>
           </template>
         </el-table-column>
-        <el-table-column :label="$t('user.active')"  width="80">
+        <el-table-column :label="$t('user.active')" width="80">
           <template slot-scope="scope">
             <el-tag type="success" v-if="scope.row.active == 1">Active</el-tag>
             <el-tag type="danger" v-if="scope.row.active == 2">Inactive</el-tag>
@@ -72,6 +71,7 @@
           </template>
         </el-table-column>
       </el-table>
+      <user-record :user-list="tableData"></user-record>
     </div>
     <user-dialog
       :user-form="userForm"
@@ -85,9 +85,10 @@
 import UserApi from "@/api/user";
 import User, { DIALOG_MODE } from "@/models/user";
 import UserDialog from "@/components/UserDialog.vue";
+import UserRecord from "@/components/UserRecord.vue";
 
 export default {
-  components: { UserDialog },
+  components: { UserDialog, UserRecord },
   data() {
     return {
       userForm: new User(),
@@ -95,11 +96,7 @@ export default {
       tableData: [],
     };
   },
-  computed: {
-    // showDialog() {
-    //   return this.$store.state.showUserDialog;
-    // },
-  },
+  computed: {},
   methods: {
     async loadUserList() {
       try {
@@ -133,7 +130,6 @@ export default {
       this.userForm.data = row;
       this.showUserDialog();
     },
-
     async showUserDialog() {
       this.$store.dispatch("showUserDialog");
     },
@@ -157,9 +153,14 @@ export default {
   width: 80%;
   margin-left: 10%;
   margin-top: 5%;
+  padding: 1% 0;
 }
-.table-container> button{
+
+.table-container > div {
   float: right;
+}
+
+.table-container > div > button {
   margin-bottom: 2%;
   padding: 10px 20px;
 }

@@ -73,4 +73,16 @@ export default {
         });
     });
   },
+  getUserRecord(params) {
+    return new Promise((res, rej) => {
+      axios
+        .get(`/api/v1/user/user-login`, {params: params})
+        .then((response) => {
+          res(response);
+        })
+        .catch((error) => {
+          rej(error);
+        });
+    });
+  },
 };

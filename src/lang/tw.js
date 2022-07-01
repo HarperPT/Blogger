@@ -16,6 +16,7 @@ export default {
     edit: "編輯",
     delete: "刪除",
     info: "資訊",
+    query_time: "時間區間"
   },
   label: {
     user: "使用者",

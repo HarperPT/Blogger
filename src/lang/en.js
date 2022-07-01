@@ -15,9 +15,12 @@ export default {
     create: "Create",
     edit: "Edit",
     delete: "Delete",
-    info: "Information"
+    info: "Information",
+    record: "Record",
+    query_time: "Query Time"
   },
   label:{
-    user: "User"
+    user: "User",
+
   }
 };

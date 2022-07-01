@@ -69,7 +69,7 @@
           v-model="userForm.active"
           placeholder="Select"
           :disabled="disabledFiled(FORM_FIELD.ACTIVE)"
-          style="width: 100%;"
+          style="width: 100%"
         >
           <el-option
             v-for="stauts in USER_STAUTS"
