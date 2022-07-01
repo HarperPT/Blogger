@@ -1,72 +1,78 @@
 <template>
   <div class="container">
-    <el-button
-      size="mini"
-      type="success"
-      @click="handleCreate()"
-      style="float: right"
-    >
-      {{ $t("action.create") }}
-    </el-button>
-    <el-table :data="tableData" style="">
-      <el-table-column :label="$t('user.id')" width="50">
-        <template slot-scope="scope">
-          <span>{{ scope.row.id }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column :label="$t('user.account')" max-width="100">
-        <template slot-scope="scope">
-          <!-- <i class="el-icon-time"></i> -->
-          <!-- <span style="margin-left: 10px">{{ scope.row.date }}</span> -->
-          <span>{{ scope.row.account }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column :label="$t('user.name')">
-        <template slot-scope="scope">
-          <span>{{ scope.row.name }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column :label="$t('user.active')">
-        <template slot-scope="scope">
-          <span>{{ scope.row.active }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column :label="$t('user.created_at')">
-        <template slot-scope="scope">
-          <span>{{ scope.row.created_at }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column :label="$t('user.updated_at')">
-        <template slot-scope="scope">
-          <span>{{ scope.row.updated_at }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="Info">
-        <template slot-scope="scope">
-          <el-button
-            size="mini"
-            icon="el-icon-search"
-            type="primary"
-            plain
-            @click="getUserInfo(scope.$index, scope.row)"
-          >
-          </el-button>
-        </template> </el-table-column
-      >k
-      <el-table-column label="Operations">
-        <template slot-scope="scope">
-          <el-button size="mini" @click="handleEdit(scope.$index, scope.row)"
-            >Edit
-          </el-button>
-          <el-button
-            size="mini"
-            type="danger"
-            @click="handleDelete(scope.$index, scope.row)"
-            >Delete
-          </el-button>
-        </template>
-      </el-table-column>
-    </el-table>
+    <div class="table-container">
+      <el-button
+        size="mini"
+        type="success"
+        @click="handleCreate()"
+      >
+        {{ $t("action.create") }}
+      </el-button>
+      <el-table
+        :data="tableData"
+        :default-sort="{ prop: 'date', order: 'ascending' }"
+        border
+      >
+        <el-table-column :label="$t('user.id')" width="50">
+          <template slot-scope="scope">
+            <span>{{ scope.row.id }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column :label="$t('user.account')" max-width="100">
+          <template slot-scope="scope">
+            <!-- <i class="el-icon-time"></i> -->
+            <!-- <span style="margin-left: 10px">{{ scope.row.date }}</span> -->
+            <span>{{ scope.row.account }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column :label="$t('user.name')">
+          <template slot-scope="scope">
+            <span>{{ scope.row.name }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column :label="$t('user.active')"  width="80">
+          <template slot-scope="scope">
+            <el-tag type="success" v-if="scope.row.active == 1">Active</el-tag>
+            <el-tag type="danger" v-if="scope.row.active == 2">Inactive</el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column :label="$t('user.created_at')" sortable prop="date">
+          <template slot-scope="scope">
+            <span>{{ scope.row.created_at }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column :label="$t('user.updated_at')">
+          <template slot-scope="scope">
+            <span>{{ scope.row.updated_at }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="Info" width="70">
+          <template slot-scope="scope">
+            <el-button
+              size="mini"
+              icon="el-icon-search"
+              type="primary"
+              plain
+              @click="getUserInfo(scope.$index, scope.row)"
+            >
+            </el-button>
+          </template>
+        </el-table-column>
+        <el-table-column label="Operations">
+          <template slot-scope="scope">
+            <el-button size="mini" @click="handleEdit(scope.$index, scope.row)"
+              >Edit
+            </el-button>
+            <el-button
+              size="mini"
+              type="danger"
+              @click="handleDelete(scope.$index, scope.row)"
+              >Delete
+            </el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+    </div>
     <user-dialog
       :user-form="userForm"
       :mode="mode"
@@ -90,9 +96,9 @@ export default {
     };
   },
   computed: {
-    showDialog() {
-      return this.$store.state.showUserDialog;
-    },
+    // showDialog() {
+    //   return this.$store.state.showUserDialog;
+    // },
   },
   methods: {
     async loadUserList() {
@@ -107,7 +113,7 @@ export default {
       try {
         const { data } = await UserApi.getUserInfo(account);
         this.userForm.data = data.result;
-        this.showUserDialog();
+        await this.showUserDialog();
       } catch (error) {
         console.log(error);
       }
@@ -128,7 +134,7 @@ export default {
       this.showUserDialog();
     },
 
-    showUserDialog() {
+    async showUserDialog() {
       this.$store.dispatch("showUserDialog");
     },
   },
@@ -144,6 +150,17 @@ export default {
 } */
 
 .container {
-  width: 90%;
+  width: 100%;
+}
+
+.table-container {
+  width: 80%;
+  margin-left: 10%;
+  margin-top: 5%;
+}
+.table-container> button{
+  float: right;
+  margin-bottom: 2%;
+  padding: 10px 20px;
 }
 </style>

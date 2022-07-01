@@ -52,7 +52,7 @@ export default {
   editUser(body) {
     return new Promise((res, rej) => {
       axios
-        .put(`/api/v1/user`,body)
+        .put(`/api/v1/user`, body)
         .then((response) => {
           res(response);
         })

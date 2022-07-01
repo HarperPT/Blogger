@@ -76,7 +76,7 @@ export const FORM_FIELD = {
 export const DIALOG_MODE = {
   INFO: {
     id: "INFO",
-    lable: "action.info",
+    label: "action.info",
     fields: [
       FORM_FIELD.ACCOUNT,
       FORM_FIELD.PASSWORD,
@@ -100,7 +100,7 @@ export const DIALOG_MODE = {
   },
   CREATE: {
     id: "CREATE",
-    lable: "action.create",
+    label: "action.create",
     fields: [
       FORM_FIELD.ACCOUNT,
       FORM_FIELD.PASSWORD,
@@ -112,7 +112,7 @@ export const DIALOG_MODE = {
   },
   EDIT: {
     id: "EDIT",
-    lable: "action.edit",
+    label: "action.edit",
     fields: [
       FORM_FIELD.PASSWORD,
       FORM_FIELD.PASSWORD_CONFIRM,
@@ -123,8 +123,19 @@ export const DIALOG_MODE = {
   },
   DELETE: {
     id: "DELETE",
-    lable: "action.delete",
+    label: "action.delete",
     fields: [FORM_FIELD.ACCOUNT],
-    disableds: [],
+    disableds: [FORM_FIELD.ACCOUNT],
   },
 };
+
+export const USER_STAUTS = [
+  {
+    label: "active",
+    value: 1,
+  },
+  {
+    label: "Inactive",
+    value: 2,
+  },
+];

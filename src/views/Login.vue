@@ -1,11 +1,11 @@
 <template>
   <div>
     <div class="container">
-      <el-form label-width="100px" :model="form" class="login-form">
-        <el-form-item :label="$t('user.account')" class="login-row">
+      <el-form label-width="100px" :model="form" class="login-form" :rules="rules" ref="loginForm">
+        <el-form-item :label="$t('user.account')" prop="account" class="login-row">
           <el-input v-model="form.account"></el-input>
         </el-form-item>
-        <el-form-item :label="$t('user.password')" class="login-row">
+        <el-form-item :label="$t('user.password')" prop="password" class="login-row">
           <el-input v-model="form.password"></el-input>
         </el-form-item>
         <el-form-item>
@@ -27,12 +27,32 @@ export default {
         account: "admin",
         password: "password",
       },
+      rules: {
+        account: [
+          { required: true, message: "請輸入帳號", trigger: "blur" },
+          { min: 4, max: 12, message: "4 ~ 12個字元", trigger: "blur" },
+          {
+            pattern: /^[\u4e00-\u9fa5_a-zA-Z0-9]+$/,
+            message: "中英文數字組合",
+            trigger: "submit",
+          },
+        ],
+        password: [
+          { required: true, message: "請輸入密碼", trigger: "blur" },
+          { min: 8, max: 12, message: "8 ~ 12個字元", trigger: "blur" },
+          {
+            pattern: /^[\u4e00-\u9fa5_a-zA-Z0-9]+$/,
+            message: "中英文數字組合",
+            trigger: "submit",
+          },
+        ],
+      },
     };
   },
+  watch: {},
   methods: {
     async onLogin() {
       try {
-        // TODO: account validation
         // TODO: status
         // TODO: logs
         const { data } = await UserApi.login(this.form);
@@ -40,7 +60,7 @@ export default {
         this.$router.push({ path: "/" });
       } catch (error) {
         await this.setLocalStorage("");
-        alert(error)
+        this.$alert(error);
       } finally {
       }
     },

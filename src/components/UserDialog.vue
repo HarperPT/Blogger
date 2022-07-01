@@ -24,6 +24,7 @@
       >
         <el-input
           v-model="userForm.password"
+          type="password"
           :disabled="disabledFiled(FORM_FIELD.PASSWORD)"
         ></el-input>
       </el-form-item>
@@ -34,6 +35,7 @@
       >
         <el-input
           v-model="userForm.passwordConfirmation"
+          type="password"
           :disabled="disabledFiled(FORM_FIELD.PASSWORD_CONFIRM)"
         >
         </el-input>
@@ -63,10 +65,20 @@
         prop="active"
         v-if="showField(FORM_FIELD.ACTIVE)"
       >
-        <el-input
+        <el-select
           v-model="userForm.active"
+          placeholder="Select"
           :disabled="disabledFiled(FORM_FIELD.ACTIVE)"
-        ></el-input>
+          style="width: 100%;"
+        >
+          <el-option
+            v-for="stauts in USER_STAUTS"
+            :key="stauts.value"
+            :label="stauts.label"
+            :value="stauts.value"
+          >
+          </el-option>
+        </el-select>
       </el-form-item>
       <el-form-item
         :label="$t('user.created_at')"
@@ -90,6 +102,7 @@
       </el-form-item>
     </el-form>
     <span slot="footer" class="dialog-footer">
+      <el-button type="" @click="handleCancel">Cancel</el-button>
       <el-button
         type="primary"
         v-if="showActionButton('INFO')"
@@ -120,7 +133,7 @@
 
 <script>
 import UserApi from "@/api/user";
-import User, { FORM_FIELD, DIALOG_MODE } from "@/models/user";
+import User, { FORM_FIELD, DIALOG_MODE, USER_STAUTS } from "@/models/user";
 
 export default {
   name: "UserDialog",
@@ -154,6 +167,8 @@ export default {
     };
     return {
       FORM_FIELD,
+      USER_STAUTS,
+      formValid: false,
       rules: {
         account: [
           { required: true, message: "請輸入帳號", trigger: "blur" },
@@ -174,7 +189,7 @@ export default {
           },
         ],
         passwordConfirmation: [
-          { required: true, message: "請輸入名稱", trigger: "blur" },
+          { required: true, message: "請輸入驗證密碼", trigger: "blur" },
           { validator: checkSamePassword, trigger: "blur" },
         ],
         name: [
@@ -191,13 +206,10 @@ export default {
   },
   computed: {
     title() {
-      return `${this.operation} ${this.$t("label.user")}`;
+      return `${this.$t("label.user")} - ${this.$t(this.mode.label)}`;
     },
     showDialog: {
       set(value) {
-        if (!value) {
-          this.resetValidation();
-        }
         this.$store.commit("showDialog", value);
       },
       get() {
@@ -206,54 +218,67 @@ export default {
     },
   },
   created() {},
-  watch: {},
+  watch: {
+    showDialog(value) {
+      if (!value) {
+        this.resetValidation();
+      }
+    },
+  },
   methods: {
     async validation() {
-      this.$refs["userForm"].validate((valid) => {
-        // 驗證通過為true，有一個不通過就是false
-        if (valid) {
-          // 通過校驗
-        } else {
-          // alert(valid)
-          // 沒通過校驗
-        }
+      return new Promise((res, rej) => {
+        this.$refs["userForm"].validate((valid) => {
+          if (valid) {
+            res(valid);
+          } else {
+            this.$alert("Form Valid");
+            res(valid);
+          }
+        });
       });
     },
     resetValidation() {
-      this.userForm.clear();
-      this.$refs["userForm"].resetFields();
+      this.$refs["userForm"].clearValidate();
     },
     async handleConfirm() {
       this.closeDialog();
     },
+    async handleCancel() {
+      this.closeDialog();
+    },
     async handleCreate() {
-      this.validation();
+      if (!(await this.validation())) return;
       const req = this.userForm.reqCreate;
       try {
         const { data } = await UserApi.createUser(req);
         this.successAction();
       } catch (error) {
-        console.log(error);
+        this.$alert(error);
       }
     },
     async handleEdit() {
-      this.validation();
+      if (!(await this.validation())) return;
       const req = this.userForm.reqEdit;
       try {
-        const  data  = await UserApi.editUser(req);
+        const data = await UserApi.editUser(req);
         this.successAction();
       } catch (error) {
-        console.log(error);
+        this.$alert(error);
       }
     },
     async handleDelete() {
-      this.validation();
+      if (!(await this.validation())) return;
+      if (this.userForm.account == "admin") {
+        this.$alert("不可刪除Admin");
+        return;
+      }
       const req = this.userForm.reqDelete;
       try {
         const { data } = await UserApi.deleteUser(req);
         this.successAction();
       } catch (error) {
-        console.log(error);
+        this.$alert(error);
       }
     },
     showActionButton(modeId) {
@@ -266,7 +291,7 @@ export default {
       return this.mode.disableds.includes(formField);
     },
     closeDialog() {
-      this.$store.commit("showDialog", false);
+      this.showDialog = false;
     },
     successAction() {
       this.$store.commit("showDialog", false);

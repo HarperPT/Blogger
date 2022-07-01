@@ -11,6 +11,7 @@ Vue.config.productionTip = false;
 
 const messages = {
   tw: tw,
+  en: en
 };
 const i18n = new VueI18n({
   locale: "en",
