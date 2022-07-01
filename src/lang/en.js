@@ -17,7 +17,8 @@ export default {
     delete: "Delete",
     info: "Information",
     record: "Record",
-    query_time: "Query Time"
+    query_time: "Query Time",
+    logout: "Logout"
   },
   label:{
     user: "User",

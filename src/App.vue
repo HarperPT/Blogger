@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <SwitchLanguageVue />
+    <Header></Header>
     <router-link to="/"></router-link>
     <router-link to="/login"></router-link>
     <router-view></router-view>
@@ -10,15 +10,15 @@
 <script>
 import Login from "@/views/Login.vue";
 import Home from "@/views/Home.vue";
-import SwitchLanguageVue from "./components/SwitchLanguage.vue";
+import Header from "./components/Header.vue";
 
 export default {
   name: "app",
   components: {
     Login,
     Home,
-    SwitchLanguageVue,
-  },
+    Header,
+},
 };
 </script>
 

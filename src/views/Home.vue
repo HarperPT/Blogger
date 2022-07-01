@@ -2,7 +2,7 @@
   <div class="container">
     <div class="table-container">
       <div>
-        <el-button size="mini" type="success" @click="handleCreate()">
+        <el-button size="medium" type="success" @click="handleCreate()">
           {{ $t("action.create") }}
         </el-button>
       </div>
@@ -152,7 +152,6 @@ export default {
 .table-container {
   width: 80%;
   margin-left: 10%;
-  margin-top: 5%;
   padding: 1% 0;
 }
 

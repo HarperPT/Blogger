@@ -21,9 +21,6 @@ export default {
 </script>
 <style scoped>
 .lang-block {
-  float: left;
-  top: 2%;
-  width: 100px;
-  margin-left: 10%;
+
 }
 </style>
