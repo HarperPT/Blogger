@@ -35,11 +35,10 @@
       </el-form-item>
     </el-form>
     <div>
-    <p>
-      {{ result == "" ? "No Data" : result }}
-    </p>
+      <p>
+        {{ result == "" ? "No Data" : result }}
+      </p>
     </div>
-
   </div>
 </template>
 
@@ -130,18 +129,30 @@ export default {
       };
     },
     async handleRecord() {
+      if (!(await this.validation())) return;
       const req = {
         account: this.recordForm.account,
         start_time: this.recordForm.queryTime[0],
         end_time: this.recordForm.queryTime[1],
       };
-      // if (!(await this.validation())) return;
       try {
         const { data } = await UserApi.getUserRecord(req);
         this.result = data.result;
       } catch (error) {
         this.$alert(error);
       }
+    },
+    async validation() {
+      return new Promise((res, rej) => {
+        this.$refs["recordForm"].validate((valid) => {
+          if (valid) {
+            res(valid);
+          } else {
+            this.$alert("Form Valid");
+            res(valid);
+          }
+        });
+      });
     },
     disabledDate(date) {
       if (this.fromDate) {
@@ -160,7 +171,7 @@ export default {
 
 .record-container {
   width: 100%;
-  background-color:rgb(253, 255, 223);
+  background-color: rgb(253, 255, 223);
 }
 
 .record-container > * {
